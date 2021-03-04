@@ -1,0 +1,52 @@
+\documentclass[onecolumn]{article}
+\usepackage{url}
+\usepackage{algorithmic}
+\usepackage[a4paper]{geometry}
+\usepackage{datetime}
+\usepackage[margin=2em, font=small,labelfont=it]{caption}
+\usepackage{graphicx}
+\usepackage{mathpazo} % use palatino
+\usepackage[scaled]{helvet} % helvetica
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{minted}
+% Letterspacing macros
+\newcommand{\spacecaps}[1]{\textls[200]{\MakeUppercase{#1}}}
+\newcommand{\spacesc}[1]{\textls[50]{\textsc{\MakeLowercase{#1}}}}
+
+\title{\spacecaps{Lab report: SW01 }\\ \normalsize \spacesc{TSM\_AnTeDe} }
+
+\author{Fabian Gröger\thanks{fabian.groeger@hslu.ch}\\Hochschule Luzern}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Lab 1a: Setting up the environment}
+This notebook was only used as installation instruction and thus is not further discussed.
+
+\section{Lab 1b: Text segmentation with nltk}
+\label{sec:Lab1b}
+In this notebook, we started by downloading a book from the Gutenberg Project. This text was then used throughout the exercise. The goal was to trim the text by removing the leading and trailing text, which corresponds to the intro and the book's license. Afterwards, the text was segmented into sentences and line-by-line written into a text file. This showed that overall \verb|nltk| did a great job on detecting the sentences. However, there were still some wrongly segmented sentences. Most of them were either small sentence fragments, e.g. "just so." or were indirect speech. Then the sentences were tokenized and again saved in a file. This showed that the tokenization worked good and didn't show any unexpected results.
+
+Using \verb|nltk.Text| an object was created from the word tokens which enabled us to apply some auxiliary function to the text, such as \verb|concordance|, \verb|similar| and \verb|collocations|. The \verb|concordance| showed exact matches of the given words. In contrast, the \verb|similar| displayed sentences that contained words similar to the given one. And the \verb|collocation| showed words that often appear together. This showed that most of these collocations were names in the text.
+
+The word frequencies were examined as frequency distribution using \verb|nltk|'s \verb|FreqDist|. This enabled us to examine the most frequent words in the text. In our case, the five most frequent words are shown in listing \ref{lst:frequent_words}. There were only four of the 70 most frequent words with a word longer than four characters. And the most frequent one was the name of the protagonist in the text. The frequency distribution further enables for easy plotting of the cumulative frequency plot using \verb|freq_dist.plot(n_most_freq)|. The resulting figure showed that the five most common words appeared roughly 10 times more than the other 65 most common ones.
+\begin{listing}[ht]
+\begin{minted}{python}
+> [(',', 15995), ('.', 8755), ('the', 7243), ('and', 6183), ('to', 5175)]
+\end{minted}
+\caption{Most frequent words in the text}
+\label{lst:frequent_words}
+\end{listing}
+
+\section{Lab 1c: A new document}
+This notebook was similarly structured as section \ref{sec:Lab1b} with the difference that here we used an HTML document instead of a raw text file. To preprocess the HTML document, we used the \verb|BeautifulSoup| package to extract the text. However, there were still some leading and trailing text that was of no interest, e.g. bibliography. Thus this text was discarded using regex to find where the "real" document's text started and ended. Then as a final preprocessing step, the text citations were omitted simply by using a regex expression (\verb|\[.*\]|). After the cleaned text was obtained, the number of tokens were compared when extracting them directly using \verb|.word_tokenize()| to the ones extracted by first segmenting the sentences and then applying tokenization to each one. This showed that the number of tokens found was equal. 
+
+A \verb|nltk.Text| object was created to examine the \verb|concordance|, \verb|similar| and \verb|collocations|. Interestingly, the collocation showed canton names such as "St. Gallen" and other two-word names such as "United Nations". The Wikipedia page's vocabulary only contained 3214 unique words with 25 words with more than 15 letters. 
+
+To create the frequency distribution, the words were preprocessed by converting the alphanumeric ones to lowercase. The distribution showed that the three most common words were "the", "," and "of". The distribution plot showed that the five most common words occurred 4 times more than the 65 other most common words.
+
+\end{document}
+
