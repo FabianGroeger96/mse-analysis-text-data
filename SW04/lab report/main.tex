@@ -1,0 +1,40 @@
+\documentclass[onecolumn]{article}
+\usepackage{url}
+\usepackage{algorithmic}
+\usepackage[a4paper]{geometry}
+\usepackage{datetime}
+\usepackage[margin=2em, font=small,labelfont=it]{caption}
+\usepackage{graphicx}
+\usepackage{mathpazo} % use palatino
+\usepackage[scaled]{helvet} % helvetica
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{subfigure}
+% Letterspacing macros
+\newcommand{\spacecaps}[1]{\textls[200]{\MakeUppercase{#1}}}
+\newcommand{\spacesc}[1]{\textls[50]{\textsc{\MakeLowercase{#1}}}}
+
+\title{\vspace{-3cm}\spacecaps{Lab report: SW04 }\\ \normalsize \spacesc{TSM\_AnTeDe} }
+
+\author{Fabian Gröger\thanks{fabian.groeger@hslu.ch}, Hochschule Luzern}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Lab 2b: Multinomial Naive Bayes with \texttt{scikit-learn}}
+The goal of this notebook was to implement the same Multinomial Naive Bayes as in Lab 2a that was discussed during class, using \texttt{scikit-learn}. In the first part of the exercise, the pros and cons of using \texttt{scikit-learn} are shown by using the pre-implemented text feature extractor \texttt{CountVectorizer}. As input, it receives a document (or a list of documents) and transforms them into a matrix of token counts. One immediate problem that arises is that the preprocessor fails to lemmatize the tokens first. After fixing this, by implementing a custom tokenizer that can be passed to the vectorizer, it can be used to extract the features from both the training and test set. In this case, the model, a Multinomial Naive Bayes (\texttt{MultinomialNB}), can be fitted on the training set and evaluated on the test data. The model's test results show that it achieved an accuracy of 66\%, which is better than random guessing but not very usable. Further, the classification report shows that the model can predict 'zurich' in all cases correctly but has some problems with 'bern' and 'geneva'. The same results can be observed when examining the confusion matrix. 
+
+Next, the Term Frequency Inverse Document Frequency (TF-IDF) feature extraction was examined further. Here tokens present in many documents within the corpus get a lower score than tokens that occur rarer. Thus in the example of Zurich and Bern, the tokens 'canton' and 'capital' get a lower score because they occur in both of the documents.
+
+The final exercise was to train a Naive Bayes model on an extended corpus and examine its results. Here the classifier first had an `UndefinedMetricWarning`, which was caused by dividing by zero because the label Zurich was never predicted.
+
+\section{Lab 2c: Newsgroup Text Classification}
+This notebook's goal was to work with a real-world dataset (newsgroup dataset) and perform text classification. First, the dataset is fetched using the implemented methods from \texttt{scikit-learn} and cleaned so that it only contains text features. This results in a corpus of $\approx 11'000$ training and $\approx 7'000$ test documents.
+
+The first classifier trained is a Multinomial Naive Bayes with the \texttt{CountVectorizer} as a preprocessing step, using the default parameters. Thus the vectorizer does not remove the stop words. This results in a test accuracy of 54\%. When removing the stop words within the preprocessing step, the accuracy significantly increases to 63\%. This behaviour results from removing the stop words that do not provide any information about the label. 
+
+The second classifier is also a Multinomial Naive Bayes, but using the TF-IDF features. Also, the preprocessor can be used to remove the stop words. This results in a test accuracy of 70\%. When the stop words are not removed, the accuracy only drops roughly 2\% to 68\%, which is not a significant decrease. The nature of the features causes this behaviour because words that often appear in the corpus get a lower score than rarer tokens. Thus the stop words already get a lower score, and thus it doesn't make that much of a difference if they are removed or get a low score.
+
+\end{document}
+
