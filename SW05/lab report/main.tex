@@ -1,0 +1,33 @@
+\documentclass[onecolumn]{article}
+\usepackage{url}
+\usepackage{algorithmic}
+\usepackage[a4paper]{geometry}
+\usepackage{datetime}
+\usepackage[margin=2em, font=small,labelfont=it]{caption}
+\usepackage{graphicx}
+\usepackage{mathpazo} % use palatino
+\usepackage[scaled]{helvet} % helvetica
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{subfigure}
+% Letterspacing macros
+\newcommand{\spacecaps}[1]{\textls[200]{\MakeUppercase{#1}}}
+\newcommand{\spacesc}[1]{\textls[50]{\textsc{\MakeLowercase{#1}}}}
+
+\title{\vspace{-3cm}\spacecaps{Lab report: SW05 }\\ \normalsize \spacesc{TSM\_AnTeDe} }
+
+\author{Fabian Gröger\thanks{fabian.groeger@hslu.ch}, Hochschule Luzern}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Lab 3b: Unsupervised Sentiment Analysis}
+The notebook's goal is to build a baseline solution for unsupervised sentiment analysis for the IMDB movie review dataset. The corpus can be downloaded using \texttt{nltk}. It consists of movie reviews and their corresponding labels. The baseline model idea is relatively simple, count the number of positive and negative words in a review and predict it as positive when the number of positive words is greater than the negative count. For defining the sentiment, a list of positive and negative words needs to be created. This can be done by using the provided text files from the opinion lexicon. The prediction can now be implemented by first tokenizing the review followed by counting the positive and negative words. The baseline model results show an accuracy of 70\%, which is 20\% better than random guessing. Reaching these scores with such a simple heuristic is surprising. It should therefore always be used as a baseline to compare to more complex models.
+
+\section{Lab 3c: Supervised Sentiment Analysis}
+The notebook aims to build a supervised sentiment analysis model for the IMDB movie review dataset. Since we are in the supervised domain, we will need to create a training and test set to ensure the performance's validity. The corpus consists of movie reviews and can thus not be used directly to train a model. Hence, the input will first be pre-processed by the \texttt{CountVectorizer} that transforms the text into a numerical representation that shows each word's occurrence. The vectorizer can either transform the text using the occurrence or use a binary representation that only indicates if some word is in the review. When comparing both approaches using 10-fold cross-validation and multinomial Bayes classifier, the binary representation performs slightly better by approx. 3\%. Next, the Bayes classifier was exchanged for a logistic regression which leads to another 0.5\% improvement. When examining the classifier's predictions, it was seen that it classifies many neutral words, such as minutes, earthquake, as either positive or negative words. To mitigate this problem, the idea is to use the same list of positive and negative words as in part b to filter out all the natural words. However, using this additional step only resulted in a 0.5\% performance increase, which is relatively low. The increase was expected to be much higher since this should filter out a lot of the wrong predictions that the model does. 
+
+
+\end{document}
+
