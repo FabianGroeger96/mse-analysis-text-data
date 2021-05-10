@@ -1,0 +1,40 @@
+\documentclass[onecolumn]{article}
+\usepackage{url}
+\usepackage{algorithmic}
+\usepackage[a4paper]{geometry}
+\usepackage{datetime}
+\usepackage[margin=2em, font=small,labelfont=it]{caption}
+\usepackage{graphicx}
+\usepackage{mathpazo} % use palatino
+\usepackage[scaled]{helvet} % helvetica
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{subfigure}
+% Letterspacing macros
+\newcommand{\spacecaps}[1]{\textls[200]{\MakeUppercase{#1}}}
+\newcommand{\spacesc}[1]{\textls[50]{\textsc{\MakeLowercase{#1}}}}
+
+\title{\vspace{-3cm}\spacecaps{Lab report: Week 9 }\\ \normalsize \spacesc{TSM\_AnTeDe} }
+
+\author{Fabian Gröger\thanks{fabian.groeger@hslu.ch}, Hochschule Luzern}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Lab 9a: Using Syntax Parsers}
+The notebook's goal is to familiarize with syntax parsing using \texttt{CoreNLP}. \texttt{CoreNLP} first needs to be downloaded from the Stanford servers. After that, a \texttt{CoreNLPServer} can be started locally on a specified port. This server can then be used to perform various actions such as tokenization, part-of-speech tagging and dependency parsing. The notebook goes on to using the server for parsing and showing the sentence's dependency tree. The tree shows how the type of each token along with their connection. It can be clearly seen that if the sentence is too complex, the tree also looks nested and entangled.
+
+\section{Lab 9b: Neural Dependency Parser}
+In this notebook, we'll use a neural dependency parser described in the paper \textit{A Fast and Accurate Dependency Parser using Neural Networks} written by Danqi Chen and Christopher Manning and published in the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP). First, we define the \texttt{ParserModel}. This neural network will predict which transition (SHIFT, Left Arch, Right Arch) should be applied to a given partial parse configuration. Next, we have the \texttt{PartialParse} that will parse a sentence by following the given transitions. 
+
+The \texttt{PartialParse} will initialize the parse and give these features are then passed to the \texttt{ParserModel}, which will output probabilities of the three possible transitions. Then best transition is chosen and passed to the \texttt{PartialParse} that will perform the action. This process is repeated until the sentence has been processed.
+
+\subsection{Can you modify the parameter \texttt{n\_classes}? Why or why not? What does it represent?}
+It can not be modified because it corresponds to the three possible transitions that can be taken.
+
+\subsection{Modify some of the parameters of the model (e.g., \texttt{hidden\_size}) and see how the performance changes. Explain, in broad terms, the effect of your changes.}
+If the \texttt{hidden\_size} is significantly increased, the model is overfitting quite clearly. And if it is decreased, it is underfitting. The \texttt{hidden\_size} indicates how many neurons the feedforward neural network of the dependency parser should have. 
+
+\end{document}
+
